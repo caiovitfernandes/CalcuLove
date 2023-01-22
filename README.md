@@ -8,7 +8,7 @@ Com ele, você pode escolher a data de referência do seu relacionamento, como a
 Este projeto foi desenvolvido pensando em tornar o momento especial ainda mais especial. É uma forma fácil e divertida de manter a contagem do tempo passado juntos.
 ![Screenshot do aplicativo mostrando a contagem de tempo](https://github.com/caiovitfernandes/CalcuLove/blob/main/img/2.png?raw=true)
 
-Além disso, para facilitar a distribuição do aplicativo, você pode baixá-lo gratuitamente, de forma segura atravéz deste repositório.
+Além disso, para facilitar a distribuição do aplicativo, você pode baixá-lo gratuitamente, de forma segura [CLICANDO AQUI!](https://github.com/caiovitfernandes/CalcuLove/blob/main/dist/CalcuLove.exe).
 
 Estou sempre buscando melhorias e novas funcionalidades, então não hesite em enviar sugestões e feedbacks.
 
