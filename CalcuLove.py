@@ -8,6 +8,13 @@ import pickle
 import os
 from tkinter import ttk
 
+color_map = {
+    "Azul": "blue",
+    "Rosa": "#ff69b4",
+    "Preto": "black",
+    "Amarelo": "#ffffe0"
+}
+
 
 def choose_reference_date():
     while True:
@@ -41,6 +48,10 @@ def update_time():
     reference_date = load_reference_date()
     now = datetime.now()
     delta = relativedelta(now, reference_date)
+    bg_color = load_bg_color()
+    if bg_color:
+        mapped_color = color_map.get(bg_color)
+        root.configure(bg=mapped_color)
     time_label.config(text=f"Já estamos juntos há:\n{delta.years} anos, {delta.months} meses, {delta.days} dias, {delta.hours} horas, {delta.minutes} minutos e {delta.seconds} segundos.")
     root.after(1000, update_time)
 
@@ -50,33 +61,37 @@ def on_closing():
 
 def change_background_color(event):
     selected_color = color_combobox.get()
-    if selected_color == "Azul":
-        root.configure(bg='blue')
-        time_label.config(bg='blue')
-        alterar_data_button.config(bg='blue')
-        exit_button.config(bg='blue')
-    elif selected_color == "Rosa":
-        root.configure(bg='#ff69b4')
-        time_label.config(bg='#ff69b4')
-        alterar_data_button.config(bg='#ff69b4')
-        exit_button.config(bg='#ff69b4')
-    elif selected_color == "Preto":
-        root.configure(bg='black')
-        time_label.config(bg='black',fg='white')
-        alterar_data_button.config(bg='black',fg='white')
-        exit_button.config(bg='black',fg='white')
-    elif selected_color == "Amarelo":
-        root.configure(bg='#ffffe0')
-        time_label.config(bg='#ffffe0',fg='black')
-        alterar_data_button.config(bg='#ffffe0',fg='black')
-        exit_button.config(bg='#ffffe0',fg='black')
+    mapped_color = color_map.get(selected_color)
+    if mapped_color:
+        root.configure(bg=mapped_color)
+        if selected_color == "Amarelo":
+            time_label.configure(bg=mapped_color,fg='black')
+            alterar_data_button.configure(bg=mapped_color,fg='black')
+            exit_button.configure(bg=mapped_color,fg='black')
+        else:
+            time_label.configure(bg=mapped_color,fg='white')
+            alterar_data_button.configure(bg=mapped_color,fg='white')
+            exit_button.configure(bg=mapped_color,fg='white')
+        save_bg_color(selected_color)
+
+
+def save_bg_color(color):
+    mapped_color = color_map.get(color)
+    with open('bg_color.pkl', 'wb') as file:
+        pickle.dump(mapped_color, file)
+
+        
+def load_bg_color():
+    if os.path.exists('bg_color.pkl'):
+        with open('bg_color.pkl', 'rb') as file:
+            color = pickle.load(file)
+            return color
+    else:
+        return None
 
 
 # data/hora de referência (19 de setembro de 2019 às 21:00)
 reference_date = load_reference_date()
-
-# carregando o arquivo de ícone
-
 
 # criar a janela principal
 root = tk.Tk()
@@ -121,6 +136,26 @@ alterar_data_button.config(padx=60)
 
 #Criando o dropdown de cores
 background_colors = ["Azul", "Rosa", "Preto", "Amarelo"]
+
+# carregando a cor de fundo
+color = load_bg_color()
+if color:
+    root.configure(bg=color)
+    time_label.configure(bg=color)
+    alterar_data_button.configure(bg=color)
+    exit_button.configure(bg=color)
+
+if color:
+    mapped_color = color_map.get(color)
+    root.configure(bg=mapped_color)
+    if color == "#ffffe0":
+        time_label.configure(fg='black')
+        alterar_data_button.configure(fg='black')
+        exit_button.configure(fg='black')
+    else:
+        time_label.configure(fg='white')
+        alterar_data_button.configure(fg='white')
+        exit_button.configure(fg='white')
 
 var = tk.StringVar()
 color_combobox = ttk.Combobox(root, values=background_colors, textvariable = var)
